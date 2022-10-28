@@ -1,0 +1,255 @@
+GIT CHEAT SHEET :
+
+git init - intialize an empty repository (ls -a it shows all the hidden files so when we intialize an empty repo by doing ls -a we can the hidden .git file) and to see inside the .git folder
+ls .git we get something called head , description , info , refs , hooks , config , objects
+
+Now from here any change made in the project git will pick it up
+
+
+git status - shows the changes that are made (for ex : if it is  not staged and commited then it shows like the file is not tracked -- untracked files it shows the files in red highlighted)
+
+git add (/git add . (dot mean every thing in the current directory of project that is untracked)) or else add the files with the name for ex git add sandeep.txt -- this is called as the staging area
+
+now if u perform git status it shows changes to be commited and the files in green highlighting 
+
+git commit -m "message" -- commiting the changes 
+
+when u commit it shows the no of insertions , deletions and no of files changed that are performed 
+
+if every thing is commited when u perform the git status it says nothing to commit and working tree clean
+
+to unstage / remove from the stage - git restore --staged filename
+
+git log - the history of the commits 
+
+git reset commithashid - remove a commit from the history of the project (give the hash id that you want to remove the latest commits on top of it)
+
+git stash - from the staging area stash those changes goes to the stashing area(back stage) so with out commiting / deleting (without making changes in the history) when ever it is required we stash pop those changes so it comes to the staging area again in the same working directory
+
+git stash pop - all the changes from the back stage (stash area) will come to the unstaging area
+
+git stash clear - clearing the stashing area / stashed files 
+
+
+now remote (git hub / bit bucket comes into play) 
+
+git remote add origin URL (remote is remote repo , origin is basically the name/URL of the repo that you are adding)  - connecting the remote repository to the local repository 
+
+git remote -v - it shows all the URL's that are attached to the particular folder(basically it shows the repos / URLS that are connected a particular local folder)
+
+git push origin main/master (push is pushing the changes , origin is the name of the URL/repo that you are pushing and main is main branch / master)
+
+in old git they called it as master - slave now main and branches
+ 
+                    c4(*main)->c3->c2->c1->c0
+
+When ever you are working on a new feature / resolving a bug always create a seperate branch .
+
+
+What is head ?
+
+in branches what happens is that you should never commit in the main branch . beacause our code that in't finalized yet might contain some errors thats why all the code that is not finalized yet goes to the seperate branch that users are not effected 
+
+git branch nameofthebranch - creates a branch 
+
+git checkout nameofthebranch - the pointer moves / it points to the particular branch
+
+for ex : git branch feature and git checkout feature
+
+and now the head will be pointed to feature . (that means the changes and the commits that you made from now will be going to this new branch feature)
+
+-->head is a pointer that says all the new commits that you will be made will be added on the head . currently the head is on the feature* branch all the commits that we make now will be 
+
+in this feature
+
+now if you want to change the branch to main -- git checkout main
+
+git merge - merging (ex: if you want to merge the feature with main -- git merge feature)
+
+git push origin master -- pushing the new changes to the master branch
+
+------------------------------------------------------------------------
+Fork ?
+
+we cannot directly make changes to the code of any organization in git beacuse we don't have the access to the account.
+
+the way to contribute the code sample is : 
+
+to create the copy of the project that is by forking 
+
+fork - create the copy of the project in your own account and we can make the changes what ever we want to it . it will not reflect in the main project untill and unless the people who have 
+approval for this project will merge ur code via pull request
+
+
+
+Upstream - from where you had forked that URL is called the upstream URL(the main url that u had forked from). 
+
+command for that is - git remote add upstream URL 
+
+git remote - v (will get u all the urls that the local project is connected)
+
+git clone URL  - getting that particular project/repo to the local
+
+git revert - undoing the commit changes even in the remote 
+
+*Always create a new branch that what ever the work that we are doing whether its a feature or a bug
+
+
+PULL REQUEST :  
+
+when u create ur own copy(fork) and when u make some changes and want to see the same changes in the main . we request via pull request (when PR is merged it will be visible in the main projects main branch)
+
+
+
+Why we should never commit on main branch : 
+
+if a branch has already associated a pull request to it it will not allow to create one more pull request all the commits will be added to that pull request only . if you try to push the changes again once the PR is requested for the next changes it will go to the commits .  imagine for 10 different features you create only PR it will be very difficult so for every Feature we create a branch if the code is good with out bugs we can merge to the main .
+
+that is why when you are working on a new feature create a new PR ie is new branch . in sample one branch can only open one PR at one time . if you want to open different pull request for different features which is recommended you have to create new branches .
+
+
+git pull - if you clone from a project and later they are changes made from the upstream where u cloned  and if you want the updated changes from the upstream then we use pull .
+
+
+--------------------------------------------------
+Removing a commit from the pull request by force pushing to it
+
+by doing the git log and git reset hashcode of the below one that you want to remove .
+
+then if u want u can git add . and git stash so it will be in the stashing area . now it will be removed from commit history 
+
+**Now if u push you have to force push this because the online repo consists of a commit that local doesnt so 
+
+git push orgin feature(branch name) -f 
+
+Next merging pull request - if you merge the changes from one branch result in the other (like the feature --> main)
+
+-----------------------------------------------------
+
+Making the forked branch even with the main branch 
+*****
+by using the fetchupstream button - fetch and merge when the new thing is added between the origin and the upstream . with this button it will sync the fork(origin) and the upstream 
+
+Things that we can do here in the example upstrem main branch is having 3 commits where as forked branch main branch is having only one commit and 2 commits in sub branch.
+
+
+1. git checkout main
+
+fetching all the changes : 
+
+2. git fetch --all --prune(fetch will fetch all the commits and changes  , all means all branches that changes from the upstream also , prune means the once that are deleted they will also be fetched .. now we had fetched all the changes
+
+resetting the main branch of the origin to the main branch of the upstream
+
+3. git reset --hard upstream/main
+
+now git log - you can see all the commits that are in the upstream are even with the local (the local main is basically same as that of the upstream).
+
+now lets update the fork in the repo . so the fork is also same as the upstream
+
+--> git push origin main 
+
+now you see the same commits in the fork and in the upstream . that is how we can sync with the branches
+
+
+---------------------------
+***
+other way that we can do the same is :
+
+(here the above 3 commands can be done only with this one)
+
+git pull upstream main (git pull internally also does the same thing as git fetch ) 
+
+now we got the changes in the local so it is sync with upstream . but to sync with the origin (fork) with the upstream:
+
+git push origin main -- origin is synced with main
+
+--------------------------------
+
+Squashing commits - merging all / specific commits to a single commit 
+
+***
+
+git rebase -i hashidofthecommit(the first one - the above all commits will be considered) 
+
+for ex: 4 commits 
+
+pick d9dd567 1
+
+s cfd561 2  (s mean squash . these s commits will be squashed to a single commit . which ever is pick on top of it . the squash commits will be merged with the pick on the above it)
+
+s d9d0967 3 
+
+pick d9cd767 4
+
+
+now 1,2,3 will be merged to 1 and 4 as 2nd one . pick means u want that particular commit and squash mean it will be merged with the above pic and become a single commit .
+
+:x - it will allow to create a message for the new commit . 
+
+
+***hard 
+
+git reset --hard hashid (reset with hard) .
+
+
+now u can check what are the branches that are present at particular location ( like upstream/main , origin/head , origin/head )
+
+
+merge conflicts when merging two branches and resolving them :
+
+let say u make change in line x and some one also make change in line x same line . git will confuse ask us to tell which change does it want to take . (u want to take this or that change).
+
+if one branch is pr to the other(main) but it has the same line no code . so by manually we have to solve the conflicts . it is like overriding the changes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
